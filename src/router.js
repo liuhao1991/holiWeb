@@ -8,7 +8,7 @@ export default new Router({
   routes: [
     {
       path: '/',
-      component: resolve => require(['./components/pages/Conception.vue'], resolve)
+      component: resolve => require(['./components/pages/Conception'], resolve)
     },
     {
       path: '/county',
@@ -16,13 +16,18 @@ export default new Router({
       children: [
         {
           path: '',
-          component: resolve => require(['./components/pages/county/index/Index.vue'], resolve)
+          component: resolve => require(['./components/pages/county/index/Index'], resolve)
         },
         {
           path: 'detail',
-          component: resolve => require(['./components/pages/county/detail/Index.vue'], resolve)
+          component: resolve => require(['./components/pages/county/detail/Index'], resolve)
+        },
+        {
+          path: 'weight',
+          component: resolve => require(['./components/pages/county/weight/Index'], resolve)
         }
       ]
-    }
+    },
+
   ]
 })

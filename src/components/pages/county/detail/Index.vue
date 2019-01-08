@@ -4,7 +4,7 @@
       <div class="timestamp-wrapper">
         <img src="@/assets/img/county/time.png" alt="预报上传时间">
         <span>
-          预报上传时间:2019年01月08日 20时00分
+          预报上传时间:{{ timestamp }}
         </span>
       </div>
       <div class="data-tip">
@@ -66,6 +66,16 @@
     data () {
       return {
         data: {}
+      }
+    },
+    computed: {
+      timestamp () {
+        if (!Object.keys(this.data).length) {
+          return ''
+        }
+        const county = Object.keys(this.data)[0]
+        const datetime = this.data[county][0].INITDATE
+        return format(dateFromString(datetime, 'yyyy-mm-dd HH:MM:SS'), 'yyyy年mm月dd日 HH时MM分')
       }
     },
     mounted () {

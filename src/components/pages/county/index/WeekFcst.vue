@@ -10,7 +10,7 @@
           <img src="@/assets/img/county/more.png">
           <span>11市全部预报</span>
         </router-link>
-        <router-link class="title-btn" to="">
+        <router-link class="title-btn" to="county/weight">
           <img src="@/assets/img/county/more.png">
           <span>省市订正融合权重</span>
         </router-link>
