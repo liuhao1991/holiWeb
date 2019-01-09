@@ -28,6 +28,9 @@ export default new Router({
         }
       ]
     },
-
+    {
+      path: '/data',
+      component: resolve => require(['./components/pages/data/Index'], resolve)
+    }
   ]
 })

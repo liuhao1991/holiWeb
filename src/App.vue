@@ -6,7 +6,8 @@
         <router-view></router-view>
       </keep-alive>
     </div>
-    <v-footer />
+    
+    <v-footer v-show="path !== '/data'"/>
   </div>
 </template>
 
@@ -18,6 +19,11 @@
     components: {
       vHeader,
       vFooter
+    },
+    computed: {
+      path () {
+        return this.$route.path
+      }
     }
   }
 </script>

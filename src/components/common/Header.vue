@@ -7,7 +7,7 @@
       <router-link tag="div" class="header-nav" to="/" exact>概念</router-link>
       <router-link tag="div" class="header-nav" to="/county">城镇报</router-link>
       <router-link tag="div" class="header-nav" to="/q">到报</router-link>
-      <router-link tag="div" class="header-nav" to="/q">数据</router-link>
+      <router-link tag="div" class="header-nav" to="/data">数据</router-link>
       <router-link tag="div" class="header-nav" to="/q">平台</router-link>
       <router-link tag="div" class="header-nav" to="/q">政策</router-link>
       <router-link tag="div" class="header-nav" to="/q">技术</router-link>
@@ -27,26 +27,26 @@
 
 <style scoped lang="stylus">
   .header-main
-    background-color: rgb(49, 49, 49)
+    background-color: #1b1b1b
     height 60px
     line-height 60px
     width: 100%
     display flex
     justify-content space-between
-    padding 0 40px
+    padding 0 20px
     .header-navs
       display flex
       justify-content space-around
       align-items center
       .header-nav
-        height 25px
-        line-height 25px
-        margin 0 20px
-        font-size 12px
+        height 28px
+        line-height 28px
+        margin 0 10px 0 30px
+        font-size 14px
         cursor pointer
         color white
-        border-bottom 1px solid rgb(49, 49, 49)
+        border-bottom 2px solid #1b1b1b
         &.router-link-active 
           color #009e4f
-          border-bottom 1px solid #009e4f
+          border-bottom 2px solid #009e4f
 </style>

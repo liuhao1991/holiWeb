@@ -43,7 +43,7 @@
     },
     methods: {
       getFile () {
-        this.$axios('town/postFile')
+        this.$axios.post('town/postFile')
           .then(res => {
             this.files = res.data.data
           })

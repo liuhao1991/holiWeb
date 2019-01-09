@@ -57,7 +57,8 @@
         list: [],
         index: 0,
         valueIndex: 0,
-        flag: false
+        flag: false,
+        fetching: true
       }
     },
     components: {
@@ -73,15 +74,20 @@
     },
     methods: {
       fileObserver () {
+        this.fetching = true
         this.$axios.post('town/postFileObserver', this.$qs.stringify({time: this.date}))
           .then(res => {
             this.list = res.data.data
+            this.fetching = false
           })
       },
       fileStatus (t) {
         const time = this.list.filter(v => {
           return v.ttime === t
         })
+        // if (this.fetching) {
+        //   return
+        // }
         if (time.length) {
           const timeline = time[0].ctime.split(' ')[0] + ' ' + t + ':00'
           const ctime = time[0].ctime
@@ -92,7 +98,7 @@
           }
         } else {
           const flag = format(new Date(), 'yyyy-mm-dd') === this.date
-          return flag ? '' : 'missed'
+          return flag || this.fetching ? '' : 'missed'
         }
       },
       changeDate (d) {
