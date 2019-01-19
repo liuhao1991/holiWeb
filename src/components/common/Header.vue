@@ -7,9 +7,10 @@
       <router-link tag="div" class="header-nav" to="/" exact>概念</router-link>
       <router-link tag="div" class="header-nav" to="/county">城镇报</router-link>
       <router-link tag="div" class="header-nav" to="/q">到报</router-link>
+      <router-link tag="div" class="header-nav" to="/ruler">Ruler</router-link>
       <router-link tag="div" class="header-nav" to="/data">数据</router-link>
       <router-link tag="div" class="header-nav" to="/q">平台</router-link>
-      <router-link tag="div" class="header-nav" to="/q">政策</router-link>
+      <router-link tag="div" class="header-nav" to="/policy">政策</router-link>
       <router-link tag="div" class="header-nav" to="/q">技术</router-link>
       <router-link tag="div" class="header-nav" to="/q">运维</router-link>
       <router-link tag="div" class="header-nav" to="/q">OCF</router-link>

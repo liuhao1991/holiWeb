@@ -26,5 +26,7 @@
 
 <style scoped lang="stylus">
   .data
-    flex 1       
+    flex 1
+    height 100%
+    padding 0 50px
 </style>

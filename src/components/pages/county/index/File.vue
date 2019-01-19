@@ -2,27 +2,31 @@
   <div class="file">
     <m-title>
       <div class="title">
+        <img src="@/assets/img/county/download.png">
         <span class="text">最新报文下载</span>
       </div>
       <div class="title-btns">
-        <router-link class="file-btn" to="">
-          <img src="@/assets/img/county/explain.png">
-          <span>报文格式说明</span>
-        </router-link>
+        <div class="file-btn">
+          <span class="notice">* 城镇报会不定期反复更新，请使用最新文件</span>
+          <router-link to="">
+            <img src="@/assets/img/county/explain.png">
+            <span>报文格式说明</span>
+          </router-link>
+        </div>
       </div>
     </m-title>
     <div class="table-wrapper">
       <table>
         <tr v-for="(file, index) in files" :key="index">
           <td>{{ fileDate(file.CreateTime) }}</td>
-          <td>{{ parseInt(Number(file.FileSize) / 1024) }}K</td>
+          <td>{{ parseInt(Number(file.FileSize) / 1024) }}KB</td>
           <td><a target="_blank" :href="fileUrl(file.FileName)">{{ file.FileName }}</a></td>
         </tr>
       </table>
     </div>
-    <div class="explain">
+    <!-- <div class="explain">
       <span>*</span> 城镇报会不定期反复更新，请使用最新文件
-    </div>
+    </div> -->
   </div>
 </template>
 
@@ -38,7 +42,7 @@
     components: {
       MTitle
     },
-    mounted () {
+    activated () {
       this.getFile()
     },
     methods: {
@@ -68,25 +72,29 @@
         width 100%
         border-collapse collapse
         tr
-          border-left 1px solid rgb(229, 229, 229)
-          border-right 1px solid rgb(229, 229, 229)
-          border-bottom 1px solid rgb(229, 229, 229)
-          &:nth-child(odd)
-            background-color rgb(245, 245, 245)
+          border-bottom 1px solid #eeeeee
+          &:last-child
+            border-bottom 0px solid #eeeeee
           td
-            height 38px
-            line-height 38px
+            height 40px
+            line-height 40px
             font-size 12px
-            border-top 1px solid rgb(229, 229, 229)
             text-align center
+            font-family "SimSun"
+            white-space nowrap
             &:nth-child(1)
-              width 18%
+              width 15%
+              text-align left
+              padding-left 20px
             &:nth-child(2)
               width 15%
+              text-align right
             &:nth-child(3)
-              width 67%
+              width 60%
+              text-align right
+              padding-right 20px
               a
-                color rgb(0, 0, 238)
+                color #0066cc
     .explain
       color red
       line-height 30px

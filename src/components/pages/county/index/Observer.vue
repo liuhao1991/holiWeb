@@ -2,11 +2,12 @@
   <div class="observer">
     <m-title>
       <div class="title">
+        <img src="@/assets/img/county/monitor.png">
         <span class="text">城镇报上传国家局监控</span>
       </div>
       <div class="title-btns">
         <router-link class="file-btn" to="">
-          <img src="@/assets/img/county/explain.png">
+          <img src="@/assets/img/county/explain.png" class="observer">
           <span>操作说明</span>
         </router-link>
       </div>
@@ -69,7 +70,7 @@
         return this.date === format(new Date(), 'yyyy-mm-dd')
       }
     },
-    mounted () {
+    activated () {
       this.fileObserver()
     },
     methods: {
@@ -150,22 +151,38 @@
       .date-btns
         display flex
         .date-btn
-          width 40px;
+          width 40px
           line-height 38px
           text-align center
-          background-color #e5e5e5
+          background-color #f5f5f5
           cursor pointer
-          border 1px solid rgb(229, 229, 229)
+          border 1px solid #eeeeee
+          display flex
+          align-items center
+          &:first-child
+            border-top-left-radius 20px
+            border-bottom-left-radius 20px
+            border-right none
+            justify-content flex-start
+            padding-left 10px
+          &:last-child
+            border-top-right-radius 20px
+            border-bottom-right-radius 20px
+            border-left none
+            justify-content flex-end
+            padding-right 10px
           &.not-allowed
             cursor not-allowed
         .date-value
-          padding 0 10px
+          padding 0 5px
           height 40px
           line-height 38px
           font-size 12px
           color #000000
-          border-top 1px solid rgb(229, 229, 229)
-          border-bottom 1px solid rgb(229, 229, 229)
+          background-color #f5f5f5
+          border-top 1px solid #eeeeee
+          border-bottom 1px solid #eeeeee
+          font-family "SimSun"
       .time-actions
         width calc(100% - 177px)
         border 1px solid #e5e5e5
@@ -187,6 +204,7 @@
             cursor pointer
             font-size 12px
             background-color #e5e5e5
+            font-family "SimSun"
             &.ontime
               color #fff
               background-color #21AD38

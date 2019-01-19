@@ -2,22 +2,49 @@
   <div class="week-chart">
     <m-title>
       <div class="title">
-        <span class="text">{{ title}} 七天预报</span>
+        <img src="@/assets/img/county/calendar.png">
+        <span class="text">{{ title }}七天预报</span>
         <span class="datetime">{{ datetime }}</span>
       </div>
       <div class="title-btns">
-        <router-link class="title-btn" to="county/detail">
+        <router-link class="title-btn" to="/county/detail">
           <img src="@/assets/img/county/more.png">
-          <span>11市全部预报</span>
+          <span>11地市全部预报</span>
         </router-link>
-        <router-link class="title-btn" to="county/weight">
-          <img src="@/assets/img/county/more.png">
+        <router-link class="title-btn weight-btn" to="/county/weight">
+          <img src="@/assets/img/county/weight.png">
           <span>省市订正融合权重</span>
         </router-link>
       </div>
     </m-title>
     <div class="chart">
-      <div class="day" v-for="(item, index) in new Array(townData.length / 2)" :key="index">
+      <div class="day" 
+        v-for="(item, index) in new Array(townData.length / 2)"
+        :key="index"
+        :class="[setWWClass(townData[index * 2].WW, townData[index * 2 + 1].WW)]">
+        <div class="ww-img">    
+          <div v-if="setWWClass(townData[index * 2].WW, townData[index * 2 + 1].WW) === 'sunny'" class="sun">
+            <div class="ray_box">
+              <div class="ray ray1">1</div>
+              <div class="ray ray2"></div>
+              <div class="ray ray3"></div>
+              <div class="ray ray4"></div>
+              <div class="ray ray5"></div>
+              <div class="ray ray6"></div>
+              <div class="ray ray7"></div>
+              <div class="ray ray8"></div>
+              <div class="ray ray9"></div>
+              <div class="ray ray10"></div>
+            </div>
+          </div>
+          <div v-else-if="setWWClass(townData[index * 2].WW, townData[index * 2 + 1].WW) === 'lightning' 
+                          || setWWClass(townData[index * 2].WW, townData[index * 2 + 1].WW) === 'rainy' 
+                          || setWWClass(townData[index * 2].WW, townData[index * 2 + 1].WW) === 'snowy'">
+            <div :class="[setWWClass(townData[index * 2].WW, townData[index * 2 + 1].WW)]"></div>
+            <div :class="[setWWClass(townData[index * 2].WW, townData[index * 2 + 1].WW)]"></div>
+          </div>
+          <img v-else-if="setWWClass(townData[index * 2].WW, townData[index * 2 + 1].WW) === 'cloudy'" :src="`/img/county/ww/${setWWClass(townData[index * 2].WW, townData[index * 2 + 1].WW)}.png`" />
+        </div>
         <div class="weekday">
           {{ getDay(townData[index * 2].INITDATE, townData[index * 2].FH) }}          
         </div>
@@ -25,9 +52,9 @@
           {{ getDate(townData[index * 2].INITDATE, townData[index * 2].FH) }}
         </div>
         <div class="ww">
-          <img :src="wwIcon(townData[index * 2].WW)">
+          <img :src="'/img/wwmoji/0' + wwIcon(townData[index * 2].WW)">
           &nbsp;&nbsp;
-          <img :src="wwIcon(townData[index * 2 + 1].WW)">
+          <img :src="'/img/wwmoji/' + wwIcon(townData[index * 2].WW)">
         </div>
         <div class="staus">
           {{ wwText(townData[index * 2].WW, townData[index * 2 + 1].WW) }}
@@ -45,7 +72,7 @@
 
 <script>
   import { format, dateFromString, addHour } from '@/assets/js/dateFmt'
-  import { ww, ws, wd } from '@/assets/js/config'
+  import { ww, ws, wd, wwClassName } from '@/assets/js/config'
   import MTitle from './Title'
   export default {
     data () {
@@ -54,7 +81,7 @@
         weekdays: ['星期日', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六'],
       }
     },
-    mounted () {
+    activated () {
       vm.$on('renderTownFcst', data => {
         this.townData = data
       })
@@ -80,7 +107,7 @@
       },
       wwIcon (ww) {
         ww = (ww.length < 2 ? '0' : '') + ww
-        return `/img/wwmoji/${ww}.png`
+        return `${ww}.png`
       },
       wwText (ww1Code, ww2Code) {
         const ww1 = (ww1Code.length < 2 ? '0' : '') + ww1Code
@@ -89,6 +116,9 @@
       },
       windText (wsCode, wdCode) {
         return wd[wdCode] + ' ' + ws[wsCode]
+      },
+      setWWClass (ww1, ww2) {
+        return wwClassName(ww1, ww2)
       }
     },
     components: {
@@ -98,37 +128,400 @@
 </script>
 
 <style scoped lang="stylus">
-  .chart
-    height 230px
-    position relative
-    background-color #546575
-    display flex
-    .day
-      flex 1
+  .week-chart
+    padding-top 20px
+    .chart
+      margin-top 20px
+      height 230px
+      position relative
       display flex
-      align-items center
-      flex-direction column
-      font-size 12px
-      padding-bottom 10px
-      padding-top 12px
-      background-color rgba(0,0,0,0.3)
-      border-right 1px solid rgba(92, 92, 92, 0.5)
-      &:last-child
-        border-right none
-      div
-        color #ffffff
+      .day
+        flex 1
         display flex
-        justify-content center
         align-items center
-        
-      .weekday, .date, .temp, .wind
-        height 30px
-      .ww
-        height 35px
-      .staus
-        height 50px
-      .ww img 
-          width 24px
-          height 24px
+        flex-direction column
+        font-size 12px
+        padding-bottom 10px
+        padding-top 12px
+        border-right 1px solid rgba(255, 255, 255, 1)
+        background-position center
+        position relative
+        overflow hidden
+        div
+          color #ffffff
+          display flex
+          justify-content center
+          align-items center
+          position relative
+          z-index 2
+          &.weekday, &.date, &.temp, &.wind
+            height 30px
+          &.ww
+            height 35px
+            img 
+              width 24px
+              height 24px
+          &.staus
+            height 50px
+          &.ww-img
+            position absolute
+          
+        &.sunny
+          background-image url(/img/county/ww/sunny_bg.png)
+          .ww-img
+            right 35px
+            top 0px
+            .sun
+              position absolute
+              top 0
+              left 0
+              right 0
+              bottom 0
+              margin auto  
+              width 70px
+              height 70px
+              border-radius 50%	
+              background #fff
+              opacity 0.8			
+              box-shadow 0px 0px 30px 10px #fff 
+              .ray_box
+                position absolute
+                margin auto
+                top 0
+                left 0
+                right 0
+                bottom 0	
+                width 70px
+                .ray
+                  background linear-gradient(to bottom, rgba(253, 201, 255, 0) 0%, rgba(253, 201, 255, 0.8) 50%, rgba(253, 201, 255, 0) 100%) 
+                  margin-left 10px
+                  border-radius 80% 80% 0 0
+                  position absolute
+                  opacity 0.3
+                  &.ray1 
+                    height 170px
+                    width 30px
+                    -webkit-transform rotate(180deg)
+                    top -175px
+                    left 15px
+                  &.ray2
+                    height 100px
+                    width 8px
+                    -webkit-transform rotate(220deg)
+                    top -90px
+                    left 75px
+                  &.ray3
+                    height 170px
+                    width 50px
+                    -webkit-transform rotate(250deg)
+                    top -80px
+                    left 100px
+                  &.ray4
+                    height 120px
+                    width 14px
+                    -webkit-transform rotate(305deg)
+                    top 30px
+                    left 100px
+                  &.ray5
+                    height 140px
+                    width 30px
+                    -webkit-transform rotate(-15deg)
+                    top 60px
+                    left 40px
+                  &.ray6
+                    height 90px
+                    width 50px
+                    -webkit-transform rotate(30deg)
+                    top 60px
+                    left -40px
+                  &.ray7
+                    height 180px
+                    width 10px
+                    -webkit-transform rotate(70deg)
+                    top -35px
+                    left -40px
+                  &.ray8
+                    height 120px
+                    width 30px
+                    -webkit-transform rotate(100deg)
+                    top -45px
+                    left -90px
+                  &.ray9
+                    height 80px
+                    width 10px
+                    -webkit-transform rotate(120deg)
+                    top -65px
+                    left -60px
+                  &.ray10
+                    height 190px
+                    width 23px
+                    -webkit-transform rotate(150deg)
+                    top -185px
+                    left -60px
+          &:hover
+            .ww-img
+              .ray_box
+                animation sunspinning 60s linear infinite
+        &.overcast
+          background-image url(/img/county/ww/overcast_bg.png)
+        &.rainy
+          background-image url(/img/county/ww/rainy_bg.png)
+          .ww-img
+            top 30px
+            right 30px
+            .rainy
+              position absolute
+              width 30px
+              height 30px
+              top -10px
+              right -20px
+              border-bottom-right-radius 50%
+              border-bottom-left-radius 50%
+              border-top-left-radius 50%
+              box-shadow inset 0 0 10px rgba(64,145,148,0.5)
+              -ms-transform rotate(-45deg)
+              -webkit-transform rotate(-45deg)
+              transform rotate(-45deg)
+              background radial-gradient(at top right,rgba(248, 255, 255,0.5),  #055bfc)
+              &:nth-child(2)
+                width 20px
+                height 20px
+                top 20px
+                right 40px
+          &:hover
+            .ww-img
+              .rainy
+                top 20px
+                animation rainy 2.5s infinite linear
+                &:nth-child(2)
+                  animation rainy_small 2.5s infinite linear
+        &.cloudy
+          background-image url(/img/county/ww/cloudy_bg.png)
+          .ww-img
+            top 12px
+            opacity 1
+          &:hover
+            .ww-img
+              animation cloud 8s infinite linear
+        &.lightning
+          background-image url(/img/county/ww/lightning_bg.png)
+          .ww-img
+            top 30px
+            right 30px
+            .lightning
+              position absolute
+              top 50%
+              left 50%
+              margin 1.55em 0 0 -0.125em
+              color #fff
+              opacity 0.3
+              transform scaleY(2.5) scaleX(1.5) rotate(10deg)
+              &:nth-child(2)
+                width 0.5em
+                height 0.25em
+                margin 8.75em 0 0 -6.275em
+                transform translate(2.5em, 2.25em)
+                opacity 0.2
+                transform scaleY(2.5)
+              &:before, &:after 
+                content ''
+                position absolute
+                z-index 2
+                top 50%
+                left 50%
+                margin -1.625em 0 0 -1.0125em
+                border-top 1.1em solid transparent
+                border-right 0.75em solid
+                border-bottom 0.75em solid
+                border-left 0.5em solid transparent
+                transform skewX(-10deg)
+              &:after
+                margin -0.25em 0 0 -0.25em
+                border-top 0.75em solid
+                border-right 0.5em solid transparent
+                border-bottom 1.25em solid transparent
+                border-left 0.75em solid
+                transform skewX(-10deg)
+              &:nth-child(2):before 
+                margin -0.75em 0 0 -0.5em
+                border-top 0.525em solid transparent
+                border-right 0.375em solid
+                border-bottom 0.375em solid
+                border-left 0.25em solid transparent
+              &:nth-child(2):after
+                margin -0.125em 0 0 -0.125em
+                border-top 0.375em solid
+                border-right 0.25em solid transparent
+                border-bottom 0.625em solid transparent
+                border-left 0.375em solid
+          &:hover
+            .ww-img
+              .lightning
+                animation lightning 2s linear infinite
+                &:nth-child(2)
+                  animation lightning 1.5s linear infinite
+        &.snowy
+          background-image url(/img/county/ww/snowy_bg.png)
+          .ww-img
+            top 10px
+            .snowy
+              &:after
+                content '\2744'
+                position absolute
+                opacity 0.8
+                top 20px
+                right 20px
+                margin -0.5em 0 0 -2em
+                font-size 2em
+              &:nth-child(2):after
+                top 10px
+                right -40px
+                margin 0.375em 0 0 0.125em
+                font-size 2.5em
+          &:hover
+            .snowy
+              &:after 
+                animation snow_falling 10s linear infinite
+        &:first-child
+          border-top-left-radius 10px
+          border-bottom-left-radius 10px
+        &:last-child
+          border-right none
+          border-top-right-radius 10px
+          border-bottom-right-radius 10px
+
+  @keyframes snow_falling {
+    0% {
+      top 20px
+    }
+    70% {
+      top 220px
+      opacity 1
+    }
+    71% {
+      top 220px
+      opacity 0
+    }
+    72% {
+      top -55px
+      opacity 0
+    }
+    75% {
+      top -55px
+      opacity 1
+    }
+    100% {
+      top 20px
+    }
+  }
+
+  @keyframes cloud {
+    0% {
+      transform translate(0%, 0)
+      opacity 1
+    }
+    50% {
+      transform translate(-100%, 0)
+      opacity 1
+    }
+    51% {
+      transform translate(-100%, 0)
+      opacity 0
+    }
+    52% {
+      transform translate(100%, 0)
+      opacity 0
+    }
+    53% {
+      transform translate(100%, 0)
+      opacity 1
+    }
+    100% {
+      transform translate(0, 0)
+      opacity 1
+    }
+  }
+
+  @keyframes rainy {
+    0% {
+      top -10px
+      opacity 1
+    }
+    80% {
+      top 200px
+      opacity 1
+    }
+    81% {
+      top 200px
+      opacity 0
+    }
+    82% {
+      top -55px
+      opacity 0
+    }
+    85% {
+      top -55px
+      opacity 1
+    }
+    100% {
+      top -10px
+      opacity 1
+    }
+  }
+  @keyframes rainy_small {
+    0% {
+      top 20px
+      opacity 1
+    }
+    70% {
+      top 200px
+      opacity 1
+    }
+    71% {
+      top 200px
+      opacity 0
+    }
+    72% {
+      top -30px
+      opacity 0
+    }
+    75% {
+      top -30px
+      opacity 1
+    }
+    100% {
+      top 20px
+      opacity 1
+    }
+  }
+
+  @keyframes lightning {
+    45% {
+      color #fff
+      background #fff
+      opacity 0.2
+    }
+    50% {
+      color #fff
+      background #fff
+      opacity 0.7
+    }
+    55% {
+      color #fff
+      background: #fff
+      opacity 0.2
+    }
+  }
+
+  @keyframes sunspinning {
+    0% {
+      -webkit-transform rotate(0deg)
+      transform: rotate(0deg)
+    }    
+    100% {
+      -webkit-transform rotate(360deg)
+      transform rotate(360deg)
+    }
+  }
 
 </style>

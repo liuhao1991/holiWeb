@@ -78,7 +78,7 @@
         return format(dateFromString(datetime, 'yyyy-mm-dd HH:MM:SS'), 'yyyy年mm月dd日 HH时MM分')
       }
     },
-    mounted () {
+    activated () {
       this.fetchData()
     },
     methods: {

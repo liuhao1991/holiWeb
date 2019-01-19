@@ -47,7 +47,7 @@ export const ws = {
 }
 
 export const wd = {
-  '0': '<=3级',
+  '0': '',
   '1': '东北风',
   '2': '东风',
   '3': '东南风',
@@ -56,4 +56,24 @@ export const wd = {
   '6': '西风',
   '7': '西北风',
   '8': '北风'
+}
+
+export const wwClassName = (ww1, ww2) => {
+  const ww = parseInt(ww1) >= parseInt(ww2) ? ww1 : ww2
+  if (ww == 0)
+    return 'sunny'
+  if (ww == 2)
+    return 'overcast' // 阴天
+  else if (ww == 3 || (ww >= 6 && ww <= 12) || ww == 19 || (ww >= 21 && ww <= 25))
+    return 'rainy'
+  else if (ww == 1)
+    return 'cloudy'
+  else if (ww >= 4 && ww <= 5)
+    return 'lightning'
+  else if ((ww >= 14 && ww <= 17) || (ww >= 26 && ww <= 28))
+    return 'snowy'
+  else if (ww == 18 || ww == 53)
+    return 'sunny'
+  else
+    return 'sunny'
 }

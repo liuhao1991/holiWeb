@@ -6,8 +6,7 @@
         <router-view></router-view>
       </keep-alive>
     </div>
-    
-    <v-footer v-show="path !== '/data'"/>
+    <v-footer v-show="!hide === true"/>
   </div>
 </template>
 
@@ -21,8 +20,8 @@
       vFooter
     },
     computed: {
-      path () {
-        return this.$route.path
+      hide () {
+        return this.$route.meta.hide
       }
     }
   }

@@ -127,7 +127,7 @@
         return addHour(dateFromString(this.datetime, 'yyyy-mm-dd HH:MM'), 1 * 12).getTime() > new Date().getTime()
       }
     },
-    mounted () {
+    activated () {
       this.initDatetime()
       this.fetchData()
     },

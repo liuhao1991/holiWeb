@@ -13,7 +13,7 @@
           :coordinate="[Number(item[0].Lon), Number(item[0].Lat)]"
           :id="item[0].STID"
           v-show="show(item[0].PName)"
-          :class="[item[0].PName === name ? 'active' : '']"
+          :class="[item[0].PName]"
           @click="renderTownFcst(item[0].PName)">
           <div class="name">
             {{ item[0].PName }}
@@ -38,7 +38,6 @@
 </template>
 
 <script>
-  import 'ol/ol.css'
   import Map from 'ol/Map'
   import View from 'ol/View'
   import TileLayer from 'ol/layer/Tile'
@@ -49,30 +48,24 @@
   export default {
     data () {
       return {
-        name: '',
         fcstIndex: 0,
-        data: [],
+        fmtData: {},
         map: null,
         zoom: 13,
         mainCity: ['杭州市', '宁波市', '温州市', '嘉兴市', '湖州市', '绍兴市', '金华市', '衢州市', '舟山市', '台州市', '丽水市']
       }
     },
-    mounted () {
-      this.initMap()
+    activated () {
+      if (!this.map) {
+        this.initMap()
+      }
       this.fetchTownFcst()
     },
+    deactivated () {
+      this.map.getOverlays().clear()
+      this.fmtData = {}
+    },
     computed: {
-      fmtData () {
-        const fmtData = {}
-        for (let index = 0; index < this.data.length; index++) {
-          const name = this.data[index].PName
-          if (!fmtData[name]) {
-            fmtData[name] = []
-          }
-          fmtData[name].push(this.data[index])
-        }
-        return fmtData
-      },
       title () {
         const exist = this.fmtData['杭州市']
         if (!exist) return ''
@@ -110,15 +103,24 @@
       fetchTownFcst () {
         this.$axios.post('town/postTownFcst')
           .then(res => {
-            this.data = res.data.data
+            const data = res.data.data
+            const fmtData = {}
+            for (let index = 0; index < data.length; index++) {
+              const name = data[index].PName
+              if (!fmtData[name]) {
+                fmtData[name] = []
+              }
+              fmtData[name].push(data[index])
+            }
+            this.fmtData = fmtData
           })
           .then(_ => {
+            this.renderTowns()
+            this.renderTownFcst(this.mainCity[0])
             this.changeResolution()
           })
       },
       changeResolution () {
-        this.renderTowns()
-        this.renderTownFcst(this.mainCity[0])
         this.map.getView().on('change:resolution', () => {
           const zoom = this.map.getView().getZoom()
           if (Number.isInteger(zoom)) {
@@ -127,11 +129,12 @@
         })
       },
       renderTowns () {
-        for (const key in this.fmtData) {
-          const element = this.fmtData[key]
-          const stid = element[0].STID
-          const coordinate = fromLonLat([Number(element[0].Lon), Number(element[0].Lat)])
-          var popup = new Overlay({
+        const items = document.querySelectorAll('.counties .county')
+        for (let i = 0; i < items.length; i++) {
+          const item = items[i]
+          const stid = item.id
+          const coordinate = fromLonLat(item.getAttribute('coordinate').split(',').map(v => Number(v)))// fromLonLat(item.coordinate)
+          const popup = new Overlay({
             element: document.getElementById(stid),
             positioning: 'center-top'
           })
@@ -140,8 +143,14 @@
         }
       },
       renderTownFcst (name) {
-        this.name = name
-        vm.$emit('renderTownFcst', this.fmtData[name])
+        const nodes = document.querySelectorAll('.county')
+        for (let i = 0; i < nodes.length; i++) {
+          nodes[i].classList.remove('active')
+        }
+        if (document.querySelector('.' + name)) {
+          document.querySelector('.' + name).classList.add('active')
+          vm.$emit('renderTownFcst', this.fmtData[name])
+        }
       },
       prev () {
         if (this.fcstIndex === 0) return
@@ -172,7 +181,8 @@
 <style scoped lang="stylus">
   @import '../../../../assets/css/variables'
   .map-wrapper
-    width 700px
+    width 940px
+    height 100%
     position relative
     .time-action
       position absolute
@@ -180,62 +190,64 @@
       left 20px
       display flex
       justify-content flex-start
-      z-index 100
+      border-radius 2px
+      z-index 99
       .prev, .next
         width 30px
-        height 30px
-        background-color #ffffff
+        height 40px
+        background-color rgba(51, 48, 69, 0.9)
         background-position center
         background-repeat no-repeat
-        background-size 6px
-        &:hover
-          background-color #00A6FF
-          cursor pointer
+        cursor pointer
+
       .time-span
-        height 30px
-        line-height 30px
+        height 40px
+        line-height 40px
         padding 0 10px
-        background-color #fff
-        margin 0 10px
+        color #fff
+        background-color rgba(51, 48, 69, 0.9)
         font-size $font-size
-        font-weight bold
       .prev
         background-image url(/img/county/prev.png)
-        &:hover
-          background-image url(/img/county/prev_white.png)
       .next
         background-image url(/img/county/next.png)
-        &:hover
-          background-image url(/img/county/next_white.png)
     #map
-      width 680px
-      height 850px
-      border 1px solid #e5e5e5
+      width 940px
+      height 100%
+      position relative
+      &:after
+        content ''
+        position absolute
+        width 5px
+        right -1px
+        bottom 0
+        top 0
+        box-shadow inset -15px 0px  10px -15px rgba(153, 153, 153, 1)
+        z-index 2
       .county
         position absolute
         font-size $font-size
-        z-index 2
+        z-index 19
         .name
           white-space nowrap
           position relative
-          // font-weight bold
         .info
-          border-radius 2px
-          padding 0px 5px
+          border-radius 24px
+          padding 4px 14px
           background-color rgb(255, 255, 255)
           box-shadow 0px 1px 5px 0px rgba(117, 207, 240, 0.7)
           cursor pointer
           position absolute
-          left -40%
-          top 25px
+          left -70%
+          bottom 25px
           &:after
             content ''
             position absolute
             width 0
             height 0
             border 8px solid transparent
-            border-bottom-color rgb(255, 255, 255)
-            bottom 91%
+            border-top-color rgb(255, 255, 255)
+            top 91%
             left 50%
             margin-left -7px
           .ww-img
@@ -244,7 +256,7 @@
             .img-item
               padding 0 4px
               img 
-                width 16px
+                width 20px
           .ww-text
             line-height 20px
             text-align center
@@ -257,7 +269,9 @@
             background-image gradient( 90deg, rgb(0, 134, 255) 0%, rgb(0, 169, 255) 100%)
             background-color rgb(0, 166, 255)
             &:after, &:after
-              border-bottom-color rgb(0, 166, 255)
+              border-top-color rgb(0, 166, 255)
             .ww-text
-              color #fff    
+              color #fff
+        &:hover
+          z-index 100
 </style>

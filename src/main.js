@@ -4,9 +4,16 @@ import router from './router'
 import axios from 'axios'
 import qs from 'qs'
 
-import { Message, Scrollbar } from 'element-ui'
+import 'element-ui/lib/theme-chalk/index.css'
+import { Message, Scrollbar, Pagination, Checkbox, ColorPicker } from 'element-ui'
+import CollapseTransition from 'element-ui/lib/transitions/collapse-transition'
 Vue.use(Scrollbar)
+Vue.use(Pagination)
+Vue.use(Checkbox)
+Vue.use(ColorPicker)
+Vue.component(CollapseTransition)
 Vue.prototype.$message = Message
+
 
 Vue.config.productionTip = false
 axios.defaults.headers = {'Content-Type': 'application/x-www-form-urlencoded'}

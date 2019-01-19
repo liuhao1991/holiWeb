@@ -2,6 +2,7 @@
   <div class="process">
     <m-title>
       <div class="title">
+        <img src="@/assets/img/county/processing.png">
         <span class="text">城镇报生成流程</span>
       </div>
     </m-title>
@@ -29,18 +30,16 @@
 
 <style scoped lang="stylus">
   .process
-    margin-top 25px
+    margin-top 30px
     .content
-      margin-top 5px
-      border 1px solid rgb(229, 229, 229)
-      background-color rgb(245, 245, 245)
       .img
         text-align center
         padding 17px 0
       .text
-        padding-left 20px
-        padding-bottom 10px
+        padding-left 35px
         p
           font-size 12px
           line-height 23px
+          font-family "SimSun"
+          color #666666
 </style>

@@ -8,7 +8,7 @@ export default new Router({
   routes: [
     {
       path: '/',
-      component: resolve => require(['./components/pages/Conception'], resolve)
+      component: resolve => require(['./components/pages/Conception'], resolve),
     },
     {
       path: '/county',
@@ -16,7 +16,10 @@ export default new Router({
       children: [
         {
           path: '',
-          component: resolve => require(['./components/pages/county/index/Index'], resolve)
+          component: resolve => require(['./components/pages/county/index/Index'], resolve),
+          meta: {
+            hide: true
+          }
         },
         {
           path: 'detail',
@@ -29,8 +32,31 @@ export default new Router({
       ]
     },
     {
-      path: '/data',
-      component: resolve => require(['./components/pages/data/Index'], resolve)
+      path: '/ruler',
+      component: resolve => require(['./components/pages/ruler/Index'], resolve),
+      meta: {
+        hide: true
+      }
+    },
+    {
+      path: '/policy',
+      component: resolve => require(['./components/pages/policy/Layout'], resolve),
+      children: [
+        {
+          path: '',
+          component: resolve => require(['./components/pages/policy/article/Index'], resolve),
+          meta: {
+            hide: true
+          }
+        },
+        {
+          path: 'file',
+          component: resolve => require(['./components/pages/policy/file/Index'], resolve),
+          meta: {
+            hide: true
+          }
+        },
+      ]
     }
   ]
 })

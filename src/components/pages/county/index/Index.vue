@@ -21,8 +21,8 @@
 
 <style scoped lang="stylus">
   .countyfcst
-    width 1400px
-    margin 20px auto 0 auto
+    min-height 900px
+    height calc(100vh - 60px)
     display flex
     justify-content space-between
 
