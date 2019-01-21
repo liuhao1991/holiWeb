@@ -21,9 +21,9 @@
       <div class="day" 
         v-for="(item, index) in new Array(townData.length / 2)"
         :key="index"
-        :class="[setWWClass(townData[index * 2].WW, townData[index * 2 + 1].WW)]">
+        :class="[setWWClass(townData[index * 2].INITDATE, townData[index * 2].FH)]">
         <div class="ww-img">    
-          <div v-if="setWWClass(townData[index * 2].WW, townData[index * 2 + 1].WW) === 'sunny'" class="sun">
+          <div v-if="setWWClass(townData[index * 2].INITDATE, townData[index * 2].FH) === 'sunny'" class="sun">
             <div class="ray_box">
               <div class="ray ray1">1</div>
               <div class="ray ray2"></div>
@@ -37,13 +37,19 @@
               <div class="ray ray10"></div>
             </div>
           </div>
-          <div v-else-if="setWWClass(townData[index * 2].WW, townData[index * 2 + 1].WW) === 'lightning' 
-                          || setWWClass(townData[index * 2].WW, townData[index * 2 + 1].WW) === 'rainy' 
-                          || setWWClass(townData[index * 2].WW, townData[index * 2 + 1].WW) === 'snowy'">
-            <div :class="[setWWClass(townData[index * 2].WW, townData[index * 2 + 1].WW)]"></div>
-            <div :class="[setWWClass(townData[index * 2].WW, townData[index * 2 + 1].WW)]"></div>
+          <div v-else-if="setWWClass(townData[index * 2].INITDATE, townData[index * 2].FH) === 'rainy'">
+            <img src="/img/county/ww/rain_b.png" class="rain"/>
+            <img src="/img/county/ww/rain_s.png" class="rain"/>
           </div>
-          <img v-else-if="setWWClass(townData[index * 2].WW, townData[index * 2 + 1].WW) === 'cloudy'" :src="`/img/county/ww/${setWWClass(townData[index * 2].WW, townData[index * 2 + 1].WW)}.png`" />
+          <div v-else-if="setWWClass(townData[index * 2].INITDATE, townData[index * 2].FH) === 'snowy'">
+            <img src="/img/county/ww/snow_b.png" class="snow" />
+            <img src="/img/county/ww/snow_s.png" class="snow" />
+          </div>
+          <div v-else-if="setWWClass(townData[index * 2].INITDATE, townData[index * 2].FH) === 'lightning'">
+            <div class="lightning"></div>
+            <div class="lightning"></div>
+          </div>
+          <img v-else-if="setWWClass(townData[index * 2].INITDATE, townData[index * 2].FH) === 'cloudy'" :src="`/img/county/ww/cloudy.png`" />
         </div>
         <div class="weekday">
           {{ getDay(townData[index * 2].INITDATE, townData[index * 2].FH) }}          
@@ -267,31 +273,17 @@
         &.rainy
           background-image url(/img/county/ww/rainy_bg.png)
           .ww-img
-            top 30px
-            right 30px
-            .rainy
+            right 15px
+            .rain
               position absolute
-              width 30px
-              height 30px
-              top -10px
-              right -20px
-              border-bottom-right-radius 50%
-              border-bottom-left-radius 50%
-              border-top-left-radius 50%
-              box-shadow inset 0 0 10px rgba(64,145,148,0.5)
-              -ms-transform rotate(-45deg)
-              -webkit-transform rotate(-45deg)
-              transform rotate(-45deg)
-              background radial-gradient(at top right,rgba(248, 255, 255,0.5),  #055bfc)
+              top -20px
+              right -16px
               &:nth-child(2)
-                width 20px
-                height 20px
-                top 20px
-                right 40px
+                top 35px
+                right 60px
           &:hover
             .ww-img
-              .rainy
-                top 20px
+              .rain
                 animation rainy 2.5s infinite linear
                 &:nth-child(2)
                   animation rainy_small 2.5s infinite linear
@@ -299,6 +291,7 @@
           background-image url(/img/county/ww/cloudy_bg.png)
           .ww-img
             top 12px
+            right -10px
             opacity 1
           &:hover
             .ww-img
@@ -363,25 +356,17 @@
         &.snowy
           background-image url(/img/county/ww/snowy_bg.png)
           .ww-img
-            top 10px
-            .snowy
-              &:after
-                content '\2744'
-                position absolute
-                opacity 0.8
-                top 20px
-                right 20px
-                margin -0.5em 0 0 -2em
-                font-size 2em
-              &:nth-child(2):after
-                top 10px
-                right -40px
-                margin 0.375em 0 0 0.125em
-                font-size 2.5em
+            top -5px
+            .snow
+              top 0px
+              right -45px
+              &:nth-child(2)
+                top 35px
+                right 60px
           &:hover
-            .snowy
-              &:after 
-                animation snow_falling 10s linear infinite
+            .snow
+              animation snow_falling 10s linear infinite
+                
         &:first-child
           border-top-left-radius 10px
           border-bottom-left-radius 10px
@@ -392,26 +377,26 @@
 
   @keyframes snow_falling {
     0% {
-      top 20px
+      top 0px
     }
     70% {
-      top 220px
+      top 235px
       opacity 1
     }
     71% {
-      top 220px
+      top 235px
       opacity 0
     }
     72% {
-      top -55px
+      top -70px
       opacity 0
     }
     75% {
-      top -55px
+      top -70px
       opacity 1
     }
     100% {
-      top 20px
+      top 0px
     }
   }
 
@@ -421,11 +406,11 @@
       opacity 1
     }
     50% {
-      transform translate(-100%, 0)
+      transform translate(-112%, 0)
       opacity 1
     }
     51% {
-      transform translate(-100%, 0)
+      transform translate(-112%, 0)
       opacity 0
     }
     52% {
@@ -444,53 +429,62 @@
 
   @keyframes rainy {
     0% {
-      top -10px
+      top -20px
+      right -16px
       opacity 1
     }
-    80% {
-      top 200px
+    75% {
+      top 220px
+      right 30px
       opacity 1
     }
-    81% {
-      top 200px
+    76% {
+      top 220px
       opacity 0
     }
-    82% {
-      top -55px
+    77% {
+      top -80px
       opacity 0
     }
-    85% {
-      top -55px
+    78% {
+      top -80px
+      right -30px
       opacity 1
     }
     100% {
-      top -10px
+      top -20px
+      right -16px
       opacity 1
     }
   }
   @keyframes rainy_small {
     0% {
-      top 20px
+      top 35px
+      right 60px
       opacity 1
     }
-    70% {
+    60% {
       top 200px
+      right 80px
       opacity 1
     }
-    71% {
+    61% {
       top 200px
       opacity 0
     }
-    72% {
-      top -30px
+    62% {
+      top -40px
+      right 50px
       opacity 0
     }
-    75% {
-      top -30px
+    65% {
+      top -40px
+      right 50px
       opacity 1
     }
     100% {
-      top 20px
+      top 35px
+      right 60px
       opacity 1
     }
   }
