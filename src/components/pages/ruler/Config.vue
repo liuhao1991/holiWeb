@@ -92,7 +92,7 @@
         return validHours
       }
     },
-    activated () {
+    mounted () {
       const ymd = this.dateFmt(0)[1]
       this.changeYmd(0, ymd)
     },

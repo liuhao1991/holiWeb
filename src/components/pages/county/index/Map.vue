@@ -5,7 +5,7 @@
       <div class="time-span">{{ title }}</div>
       <div class="next" @click="next"></div>
     </div>
-    <div id="map">
+    <div id="county-map">
       <div class="counties" v-if="Object.keys(fmtData).length">
         <div class="county"
           v-for="(item, index) in fmtData"
@@ -50,21 +50,23 @@
       return {
         fcstIndex: 0,
         fmtData: {},
-        map: null,
-        zoom: 13,
+        countyMap: null,
+        zoom:13,
         mainCity: ['杭州市', '宁波市', '温州市', '嘉兴市', '湖州市', '绍兴市', '金华市', '衢州市', '舟山市', '台州市', '丽水市']
       }
     },
-    activated () {
-      if (!this.map) {
-        this.initMap()
-      }
-      this.fetchTownFcst()
+    mounted () {
+      this.$nextTick(() => {
+        if (!this.countyMap) {
+          this.initMap()
+        }
+        this.fetchTownFcst()
+      })
     },
-    deactivated () {
-      this.map.getOverlays().clear()
-      this.fmtData = {}
-    },
+    // beforeDestroy () {
+    //   this.countyMap.getOverlays().clear()
+    //   this.fmtData = {}
+    // },
     computed: {
       title () {
         const exist = this.fmtData['杭州市']
@@ -80,13 +82,13 @@
     },
     methods: {
       initMap () {
-        this.map = new Map({
-          target: 'map',
+        this.countyMap = new Map({
+          target: 'county-map',
           layers: [
             new TileLayer({
               source: new XYZ({
                 url: 'http://webrd0{1-4}.is.autonavi.com/appmaptile?lang=zh_cn&size=1&scale=1&style=8&crs=EPSG4326&x={x}&y={y}&z={z}'
-                // url: '/img/tiles/{z}/{x}/{y}.png'
+                // url: './img/tiles/{z}/{x}/{y}.png'
               })
             }),
           ],
@@ -103,6 +105,7 @@
       fetchTownFcst () {
         this.$axios.post('town/postTownFcst')
           .then(res => {
+            // console.log(res)
             const data = res.data.data
             const fmtData = {}
             for (let index = 0; index < data.length; index++) {
@@ -121,8 +124,8 @@
           })
       },
       changeResolution () {
-        this.map.getView().on('change:resolution', () => {
-          const zoom = this.map.getView().getZoom()
+        this.countyMap.getView().on('change:resolution', () => {
+          const zoom = this.countyMap.getView().getZoom()
           if (Number.isInteger(zoom)) {
             this.zoom = zoom
           }
@@ -139,7 +142,7 @@
             positioning: 'center-top'
           })
           popup.setPosition(coordinate)
-          this.map.addOverlay(popup)
+          this.countyMap.addOverlay(popup)
         }
       },
       renderTownFcst (name) {
@@ -168,11 +171,11 @@
       },
       dayWW (ww) {
         ww = (Number(ww) <= 9 ? '00' : '0') + ww
-        return `/img/ww/${ww}.png`
+        return `./img/ww/${ww}.png`
       },
       nightWW (ww) {
         ww = (Number(ww) <= 9 ? '0' : '') + ww
-        return `/img/ww/${ww}.png`
+        return `./img/ww/${ww}.png`
       }
     }
   }
@@ -208,10 +211,10 @@
         background-color rgba(51, 48, 69, 0.9)
         font-size $font-size
       .prev
-        background-image url(/img/county/prev.png)
+        background-image url(../../../../assets/img/county/prev.png)
       .next
-        background-image url(/img/county/next.png)
-    #map
+        background-image url(../../../../assets/img/county/next.png)
+    #county-map
       width 940px
       height 100%
       position relative

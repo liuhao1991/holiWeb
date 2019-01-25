@@ -78,7 +78,7 @@
         return format(dateFromString(datetime, 'yyyy-mm-dd HH:MM:SS'), 'yyyy年mm月dd日 HH时MM分')
       }
     },
-    activated () {
+    mounted () {
       this.fetchData()
     },
     methods: {
@@ -104,7 +104,7 @@
       },
       wwIcon (ww) {
         ww = (ww.length < 2 ? '0' : '') + ww
-        return `/img/wwline/d${ww}.png`
+        return `./img/wwline/d${ww}.png`
       },
       wwText (ww1Code, ww2Code) {
         const ww1 = (ww1Code.length < 2 ? '0' : '') + ww1Code

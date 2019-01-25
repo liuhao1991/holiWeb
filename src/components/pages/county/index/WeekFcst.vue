@@ -21,9 +21,9 @@
       <div class="day" 
         v-for="(item, index) in new Array(townData.length / 2)"
         :key="index"
-        :class="[setWWClass(townData[index * 2].INITDATE, townData[index * 2].FH)]">
+        :class="[setWWClass(townData[index * 2].WW, townData[index * 2 + 1].WW)]">
         <div class="ww-img">    
-          <div v-if="setWWClass(townData[index * 2].INITDATE, townData[index * 2].FH) === 'sunny'" class="sun">
+          <div v-if="setWWClass(townData[index * 2].WW, townData[index * 2 + 1].WW) === 'sunny'" class="sun">
             <div class="ray_box">
               <div class="ray ray1">1</div>
               <div class="ray ray2"></div>
@@ -37,19 +37,19 @@
               <div class="ray ray10"></div>
             </div>
           </div>
-          <div v-else-if="setWWClass(townData[index * 2].INITDATE, townData[index * 2].FH) === 'rainy'">
-            <img src="/img/county/ww/rain_b.png" class="rain"/>
-            <img src="/img/county/ww/rain_s.png" class="rain"/>
+          <div v-else-if="setWWClass(townData[index * 2].WW, townData[index * 2 + 1].WW) === 'rainy'">
+            <img src="@/assets/img/county/ww/rain_b.png" class="rain"/>
+            <img src="@/assets/img/county/ww/rain_s.png" class="rain"/>
           </div>
-          <div v-else-if="setWWClass(townData[index * 2].INITDATE, townData[index * 2].FH) === 'snowy'">
-            <img src="/img/county/ww/snow_b.png" class="snow" />
-            <img src="/img/county/ww/snow_s.png" class="snow" />
+          <div v-else-if="setWWClass(townData[index * 2].WW, townData[index * 2 + 1].WW) === 'snowy'">
+            <img src="@/assets/img/county/ww/snow_b.png" class="snow" />
+            <img src="@/assets/img/county/ww/snow_s.png" class="snow" />
           </div>
-          <div v-else-if="setWWClass(townData[index * 2].INITDATE, townData[index * 2].FH) === 'lightning'">
+          <div v-else-if="setWWClass(townData[index * 2].WW, townData[index * 2 + 1].WW) === 'lightning'">
             <div class="lightning"></div>
             <div class="lightning"></div>
           </div>
-          <img v-else-if="setWWClass(townData[index * 2].INITDATE, townData[index * 2].FH) === 'cloudy'" :src="`/img/county/ww/cloudy.png`" />
+          <img v-else-if="setWWClass(townData[index * 2].WW, townData[index * 2 + 1].WW) === 'cloudy'" src="@/assets/img/county/ww/cloudy.png" />
         </div>
         <div class="weekday">
           {{ getDay(townData[index * 2].INITDATE, townData[index * 2].FH) }}          
@@ -58,9 +58,9 @@
           {{ getDate(townData[index * 2].INITDATE, townData[index * 2].FH) }}
         </div>
         <div class="ww">
-          <img :src="'/img/wwmoji/0' + wwIcon(townData[index * 2].WW)">
+          <img :src="'./img/wwmoji/0' + wwIcon(townData[index * 2].WW)">
           &nbsp;&nbsp;
-          <img :src="'/img/wwmoji/' + wwIcon(townData[index * 2].WW)">
+          <img :src="'./img/wwmoji/' + wwIcon(townData[index * 2 + 1].WW)">
         </div>
         <div class="staus">
           {{ wwText(townData[index * 2].WW, townData[index * 2 + 1].WW) }}
@@ -87,7 +87,7 @@
         weekdays: ['星期日', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六'],
       }
     },
-    activated () {
+    mounted () {
       vm.$on('renderTownFcst', data => {
         this.townData = data
       })
@@ -173,7 +173,7 @@
             position absolute
           
         &.sunny
-          background-image url(/img/county/ww/sunny_bg.png)
+          background-image url('../../../../assets/img/county/ww/sunny_bg.png')
           .ww-img
             right 35px
             top 0px
@@ -187,9 +187,9 @@
               width 70px
               height 70px
               border-radius 50%	
-              background #fff
-              opacity 0.8			
-              box-shadow 0px 0px 30px 10px #fff 
+              background #ebc34f
+              opacity 1			
+              box-shadow 0px 0px 30px 10px #ebc34f 
               .ray_box
                 position absolute
                 margin auto
@@ -269,9 +269,9 @@
               .ray_box
                 animation sunspinning 60s linear infinite
         &.overcast
-          background-image url(/img/county/ww/overcast_bg.png)
+          background-image url(../../../../assets/img/county/ww/overcast_bg.png)
         &.rainy
-          background-image url(/img/county/ww/rainy_bg.png)
+          background-image url(../../../../assets/img/county/ww/rainy_bg.png)
           .ww-img
             right 15px
             .rain
@@ -288,7 +288,7 @@
                 &:nth-child(2)
                   animation rainy_small 2.5s infinite linear
         &.cloudy
-          background-image url(/img/county/ww/cloudy_bg.png)
+          background-image url(../../../../assets/img/county/ww/cloudy_bg.png)
           .ww-img
             top 12px
             right -10px
@@ -297,7 +297,7 @@
             .ww-img
               animation cloud 8s infinite linear
         &.lightning
-          background-image url(/img/county/ww/lightning_bg.png)
+          background-image url(../../../../assets/img/county/ww/lightning_bg.png)
           .ww-img
             top 30px
             right 30px
@@ -354,7 +354,7 @@
                 &:nth-child(2)
                   animation lightning 1.5s linear infinite
         &.snowy
-          background-image url(/img/county/ww/snowy_bg.png)
+          background-image url(../../../../assets/img/county/ww/snowy_bg.png)
           .ww-img
             top -5px
             .snow

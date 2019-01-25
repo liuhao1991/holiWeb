@@ -2,9 +2,7 @@
   <div id="app">
     <v-header />
     <div class="base-content">
-      <keep-alive>
-        <router-view></router-view>
-      </keep-alive>
+      <router-view></router-view>
     </div>
     <v-footer v-show="!hide === true"/>
   </div>

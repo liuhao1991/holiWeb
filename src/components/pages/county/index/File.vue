@@ -42,7 +42,7 @@
     components: {
       MTitle
     },
-    activated () {
+    mounted () {
       this.getFile()
     },
     methods: {

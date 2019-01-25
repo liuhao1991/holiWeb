@@ -121,10 +121,8 @@ export const param = {
   lineWidth: 1
 }
 
-let map
+let map = null
 let vectorLayer = new ImageLayer()
-let url = 'http://localhost/holiday/index.php/ruler/map'
-
 export const initMap = (ele) => {
   map = new Map({
     target: ele,
@@ -143,6 +141,10 @@ export const initMap = (ele) => {
   map.on('moveend', () => {
     generateSource()
   })
+}
+
+export const destoryMap = () => {
+  map = null
 }
 
 export const generateSource = (params, center) => {
@@ -164,7 +166,7 @@ export const generateSource = (params, center) => {
     map.getView().setZoom(param.area === '浙江' ? 13 : 15)
     return
   }
-  axios.post(url, qs.stringify(_param))
+  axios.post('ruler/map', qs.stringify(_param))
     .then(res => {
       return res.data
     })

@@ -1,5 +1,5 @@
 <template>
-  <div id="map">
+  <div id="ruler-map">
     <div class="title">
       {{ title }}
     </div>
@@ -117,7 +117,7 @@
 </template>
 
 <script>
-  import { initMap, generateSource, param } from '@/assets/js/ruler'
+  import { initMap, destoryMap, generateSource, param } from '@/assets/js/ruler'
   const { clip, showValue, fillColor, strokeLine, textColor, textFontSize, maxValue, minValue, toFixed, lineColor, lineWidth } = param
   export default {
     props: ['title'],
@@ -170,12 +170,17 @@
       }
     },
     mounted () {
-      initMap('map')
+      initMap('ruler-map')
       vm.$off('renderMap')
+      vm.$off('alertError'),
+      vm.$off('resetMaxMinValue')
+      vm.$on('resetMaxMinValue', () => {
+        this.maxValue = ''
+        this.minValue = ''
+      })
       vm.$on('renderMap', (params, center) => {
         generateSource(params, center)
       })
-      vm.$off('alertError')
       vm.$on('alertError', res => {
         this.$message.error(res)
       })
@@ -220,7 +225,7 @@
       width 32px
     &.small
       width 50px
-  #map
+  #ruler-map
     flex 1
     position relative
     .title

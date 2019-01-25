@@ -22,7 +22,6 @@ axios.defaults.baseURL = 'http://localhost/holiday/index.php/'
 
 Vue.prototype.$axios = axios
 Vue.prototype.$qs = qs
-Vue.prototype.readerUrl = 'http://10.139.242.102/readerApi/index.php'
 var vm = new Vue({
   router,
   render: h => h(App)

@@ -65,22 +65,22 @@
               {{ item.name }}
             </td>
             <td>
-              {{ valueFmt(item.Pr24.w1) }}
+              {{ valueFmt(item.Pr12.w1) }}
             </td>
-            <td :style="setStyle(item.Pr24.w2)">
-              {{ valueFmt(item.Pr24.w2) }}
-            </td>
-            <td>
-              {{ valueFmt(item.Pr24.l1s1) }}
-            </td>
-            <td :style="setStyle(item.Pr24.l2s1)">
-              {{ valueFmt(item.Pr24.l2s1) }}
+            <td :style="setStyle(item.Pr12.w2)">
+              {{ valueFmt(item.Pr12.w2) }}
             </td>
             <td>
-              {{ valueFmt(item.Pr24.l1s2) }}
+              {{ valueFmt(item.Pr12.l1s1) }}
+            </td>
+            <td :style="setStyle(item.Pr12.l2s1)">
+              {{ valueFmt(item.Pr12.l2s1) }}
             </td>
             <td>
-              {{ valueFmt(item.Pr24.l2s2) }}
+              {{ valueFmt(item.Pr12.l1s2) }}
+            </td>
+            <td>
+              {{ valueFmt(item.Pr12.l2s2) }}
             </td>
             <td>
               {{ valueFmt(item.TMax24.w1) }}
@@ -127,7 +127,7 @@
         return addHour(dateFromString(this.datetime, 'yyyy-mm-dd HH:MM'), 1 * 12).getTime() > new Date().getTime()
       }
     },
-    activated () {
+    mounted () {
       this.initDatetime()
       this.fetchData()
     },
@@ -152,7 +152,7 @@
               for (let j = 0; j < countyData.length; j++) {
                 const cdata = countyData[j]
                 const item = data[i]
-                if (cdata.PCode === item.PCode && (item.VarName === 'Pr24' || item.VarName === 'TMax24' || item.VarName === 'TMin24')) {
+                if (cdata.PCode === item.PCode && (item.VarName === 'Pr12' || item.VarName === 'TMax24' || item.VarName === 'TMin24')) {
                   countyData[j][item.VarName] = item
                 }
               }
@@ -192,6 +192,7 @@
         color #fff
       .title
         font-size 24px
+        margin-bottom 5px
       .datetime-actions
         display flex
         justify-content flex-start

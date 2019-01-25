@@ -109,8 +109,11 @@
       },
       handleChangeVarId (index) {
         this.param.index = index
+        this.param.maxValue = ''
+        this.param.minValue = ''
         this.param.varName = this.ruler[index].varName
         this.param.hourspan = this.ruler[index].hourspan
+        vm.$emit('resetMaxMinValue')
       },
       handleChangeDateTime (ymdH) {
         this.param.dtValid = ymdH

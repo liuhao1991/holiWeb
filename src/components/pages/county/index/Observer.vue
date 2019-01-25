@@ -39,7 +39,6 @@
           </div>
         </div>
         <div class="operate-handle" @click="handleOperate">
-          <img src="@/assets/img/county/operate.png" alt="人工操作">
           <span>人工操作</span>
         </div>
       </div>
@@ -70,7 +69,7 @@
         return this.date === format(new Date(), 'yyyy-mm-dd')
       }
     },
-    activated () {
+    mounted () {
       this.fileObserver()
     },
     methods: {
@@ -133,7 +132,7 @@
         }
       },
       offsetX () {
-        const left = this.index * (70 - 5 / 1.5) - (140 - 65) / 2 + 'px'
+        const left = this.index * 80 + (140 - 80) / 2 - 70 + 17 + 'px'
         return { left }
       }
     }
@@ -144,15 +143,15 @@
   .observer
     margin-top 15px
     .content
-      height 40px
+      height 48px
       margin-top 10px
       display flex
       justify-content space-between
       .date-btns
         display flex
         .date-btn
-          width 40px
-          line-height 38px
+          width 50px
+          line-height 48px
           text-align center
           background-color #f5f5f5
           cursor pointer
@@ -164,19 +163,19 @@
             border-bottom-left-radius 20px
             border-right none
             justify-content flex-start
-            padding-left 10px
+            padding-left 15px
           &:last-child
             border-top-right-radius 20px
             border-bottom-right-radius 20px
             border-left none
             justify-content flex-end
-            padding-right 10px
+            padding-right 15px
           &.not-allowed
             cursor not-allowed
         .date-value
-          padding 0 5px
-          height 40px
-          line-height 38px
+          padding 0 25px
+          height 48px
+          line-height 46px
           font-size 12px
           color #000000
           background-color #f5f5f5
@@ -184,39 +183,42 @@
           border-bottom 1px solid #eeeeee
           font-family "SimSun"
       .time-actions
-        width calc(100% - 177px)
-        border 1px solid #e5e5e5
+        flex 1
+        margin-left 40px
         display flex
         justify-content space-between
         align-items center
-        // padding 0 5px
         .time-items
           display flex
           position relative
+          padding-left 7px
+          background-image url(../../../../assets/img/county/observer_bg.png)
+          background-repeat no-repeat
+          background-position bottom left
+          height 100%
           .time-item
-            width 65px
+            width 80px
             text-align center
-            height 38px
-            border-left 5px solid #ffffff
-            border-top 3px solid #ffffff
-            border-bottom 3px solid #ffffff
+            height 42px
             line-height 30px
             cursor pointer
             font-size 12px
-            background-color #e5e5e5
             font-family "SimSun"
+            background-image url(../../../../assets/img/county/state_default.png)
+            background-repeat no-repeat
+            background-position center
             &.ontime
               color #fff
-              background-color #21AD38
+              background-image url(../../../../assets/img/county/state_ontime.png)
             &.late
               color #fff
-              background-color #FFAB12
+              background-image url(../../../../assets/img/county/state_late.png)
             &.missed
               color #fff
-              background-color #FE6161
+              background-image url(../../../../assets/img/county/state_missed.png)
           .message
             position absolute
-            top 35px
+            top 45px
             font-size 12px
             box-shadow 0px 1px 5px 0px rgba(153, 153, 153, 0.5)
             width 140px
@@ -227,14 +229,15 @@
               line-height 25px
               
         .operate-handle
-          width 75px
-          height 30px
-          line-height 30px
-          border-radius 2px
+          width 110px
+          height 48px
+          line-height 46px
+          border-radius 24px
           text-align center
-          background-color #e5e5e5
+          background-color #f5f5f5
           cursor pointer
           margin-right 5px
+          border 1px solid #eeeeee
           span
             margin-left 5px
             font-size 12px

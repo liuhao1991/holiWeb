@@ -80,13 +80,13 @@
         showIndex: 0
       }
     },
-    activated () {
+    mounted () {
       this.fetchData()
-      // this.timer = setInterval(this.fetchData, 1000 * 20)
+      this.timer = setInterval(this.fetchData, 1000 * 20)
     },
     methods: {
       fetchData () {
-        this.$axios.post('revisiondata/postLogInfo')
+        this.$axios.post('ruler/postLogInfo')
           .then(res => {
             const { globalInfo, targetInfo } = res.data
             this.globalInfo = this.fmtData(globalInfo)
@@ -107,7 +107,7 @@
         return fmtData
       }
     },
-    deactivated () {
+    beforeDestroy () {
       clearInterval(this.timer)
     }
   }
@@ -198,11 +198,11 @@
         .status
           height 14px
           width 14px
-          background-image url(/img/ruler/right.png)
+          background-image url(../../../assets/img/ruler/right.png)
         &.error
           .text
             color #fa6060
           .status 
-            background-image url(/img/ruler/error.png)
+            background-image url(../../../assets/img/ruler/right.png)
 
 </style>
